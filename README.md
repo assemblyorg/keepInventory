@@ -7,7 +7,7 @@
 - keepInventory off -> Disable keepInventory for yourself
 - keepInventory off [player] -> Disable keepInventory for the player
 - keepInventory check -> Check if keepInventory is enabled for yourself
-- keepInventory check <player> -> Check if keepInventory is enabled for the player
+- keepInventory check [player] -> Check if keepInventory is enabled for the player
 
 ### Permissions:
 - keepinventory.command.self -> Permission to use /keepInventory
