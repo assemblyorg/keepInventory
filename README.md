@@ -16,5 +16,5 @@
 
 ---
 
-#### For developers
+## For developers
 The plugin has its own API that you can use to handle player deaths with keepInventory enabled and to manage player inventory toggle.
