@@ -631,7 +631,7 @@ to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
-    KeepInventory – A Minecraft server plugin that lets you enable or disable keepInventory for individual players instead of applying it globally.
+    keepInventory is a modern Minecraft plugin for PaperMC servers designed to toggle individual players' keepInventory gamerules.
     Copyright (C) 2026  alexthegoood
 
     This program is free software: you can redistribute it and/or modify
