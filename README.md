@@ -11,7 +11,7 @@
 
 ### Permissions:
 - keepinventory.command.self -> Permission to use /keepInventory
-- keepinventory.command.other -> Permission to use /keepInventory for others
+- keepinventory.command.other -> Permission to use /keepInventory on others
 
 ---
 
