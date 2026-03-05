@@ -1,15 +1,7 @@
 package com.github.assemblyDir.keepInventory.api;
 
-import net.kyori.adventure.text.Component;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class KeepInventoryDeathEvent extends PlayerDeathEvent {
 
@@ -17,8 +9,8 @@ public class KeepInventoryDeathEvent extends PlayerDeathEvent {
     private final boolean keepInventoryState;
     private boolean cancelled;
 
-    public KeepInventoryDeathEvent(@NotNull Player player, @NotNull DamageSource damageSource, @NotNull List<ItemStack> drops, int droppedExp, @Nullable Component deathMessage, boolean showDeathMessages, boolean keepInventoryState) {
-        super(player, damageSource, drops, droppedExp, deathMessage, showDeathMessages);
+    public KeepInventoryDeathEvent(PlayerDeathEvent event, boolean keepInventoryState) {
+        super(event.getPlayer(), event.getDamageSource(), event.getDrops(), event.getDroppedExp(), event.deathMessage(), event.getShowDeathMessages());
         this.keepInventoryState = keepInventoryState;
     }
 

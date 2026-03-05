@@ -4,20 +4,19 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class KeepInventoryUtil {
+public final class KeepInventoryUtil {
 
-    private static NamespacedKey namespacedKey;
-    public static void namespacedKey(KeepInventory instance) { namespacedKey = new NamespacedKey(instance, "keepInventory"); }
-    public static NamespacedKey namespacedKey() { return namespacedKey; }
+    private static final NamespacedKey key = KeepInventoryNamespacedKey.get();
+    private static final PersistentDataType<Byte, Boolean> dataType = PersistentDataType.BOOLEAN;
 
     public static boolean keepInventory(PersistentDataContainer persistentDataContainer) {
-        if (persistentDataContainer.has(namespacedKey()))
-            return Boolean.TRUE.equals(persistentDataContainer.get(namespacedKey(), PersistentDataType.BOOLEAN));
+        Boolean isEnabled = persistentDataContainer.get(key, dataType);
+        if (isEnabled != null) return isEnabled;
         else return false;
     }
 
     public static void keepInventory(PersistentDataContainer persistentDataContainer, Boolean isEnabled) {
-        persistentDataContainer.set(namespacedKey(), PersistentDataType.BOOLEAN, isEnabled);
+        persistentDataContainer.set(key, dataType, isEnabled);
     }
 
 }
