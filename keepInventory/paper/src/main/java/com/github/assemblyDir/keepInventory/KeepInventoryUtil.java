@@ -8,9 +8,7 @@ public final class KeepInventoryUtil {
     private static final PersistentDataType<Byte, Boolean> PERSISTENT_DATA_TYPE = PersistentDataType.BOOLEAN;
 
     public static boolean keepInventory(PersistentDataContainer persistentDataContainer) {
-        Boolean isEnabled = persistentDataContainer.get(KeepInventoryNamespacedKey.get(), PERSISTENT_DATA_TYPE);
-        if (isEnabled != null) return isEnabled;
-        else return false;
+        return persistentDataContainer.getOrDefault(KeepInventoryNamespacedKey.get(), PERSISTENT_DATA_TYPE, false);
     }
 
     public static void keepInventory(PersistentDataContainer persistentDataContainer, Boolean isEnabled) {
