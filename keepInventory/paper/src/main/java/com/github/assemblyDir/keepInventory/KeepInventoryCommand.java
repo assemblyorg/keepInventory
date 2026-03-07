@@ -53,25 +53,25 @@ public final class KeepInventoryCommand {
     }
 
     private static int execute(CommandContext<CommandSourceStack> ctx) {
-        CommandSender executor = ctx.getSource().getSender();
+        CommandSender sender = ctx.getSource().getSender();
 
         String action = ctx.getArgument("action", String.class).toLowerCase();
-        Player player;
+        Player target;
 
         try {
             String lastNodeName = ctx.getNodes().getLast().getNode().getName();
             if (lastNodeName.equals("player")) {
                 PlayerSelectorArgumentResolver playerSelectorArgumentResolver = ctx.getArgument("player", PlayerSelectorArgumentResolver.class);
-                player = playerSelectorArgumentResolver.resolve(ctx.getSource()).getFirst();
+                target = playerSelectorArgumentResolver.resolve(ctx.getSource()).getFirst();
             } else {
-                if (!(executor instanceof Player)) {
+                if (!(sender instanceof Player)) {
                     Component message = Component
                             .text("⚠ Only players can use this subcommand")
                             .color(TextColor.color(252, 165, 3));
-                    executor.getServer().getConsoleSender().sendMessage(message);
+                    sender.getServer().getConsoleSender().sendMessage(message);
                     return Command.SINGLE_SUCCESS;
                 }
-                else player = (Player) executor;
+                else target = (Player) sender;
             }
         } catch (CommandSyntaxException exception) {
             Component message = Component
@@ -83,12 +83,12 @@ public final class KeepInventoryCommand {
             Component consoleMessage = message
                     .appendNewline()
                     .append(stackTrace);
-            executor.sendMessage(message);
-            executor.getServer().getConsoleSender().sendMessage(consoleMessage);
+            sender.sendMessage(message);
+            sender.getServer().getConsoleSender().sendMessage(consoleMessage);
             return Command.SINGLE_SUCCESS;
         }
 
-        PersistentDataContainer persistentDataContainer = player.getPersistentDataContainer();
+        PersistentDataContainer persistentDataContainer = target.getPersistentDataContainer();
 
         switch (action) {
             case "on": {
@@ -97,23 +97,23 @@ public final class KeepInventoryCommand {
                             .text("⚠ Keep inventory already enabled!")
                             .color(TextColor.color(252, 165, 3));
                     Component executorMessage = Component
-                            .text("⚠ Keep inventory for " + player.getName() + " already enabled!")
+                            .text("⚠ Keep inventory for " + target.getName() + " already enabled!")
                             .color(TextColor.color(252, 165, 3));
-                    if (player.equals(executor)) player.sendMessage(playerMessage);
-                    else executor.sendMessage(executorMessage);
+                    if (target.equals(sender)) target.sendMessage(playerMessage);
+                    else sender.sendMessage(executorMessage);
                     break;
                 }
                 Component playerMessage = Component
                         .text("✔ Keep inventory enabled!")
                         .color(TextColor.color(140, 252, 3));
                 Component executorMessage = Component
-                        .text("✔ Keep inventory for " + player.getName() + " enabled!")
+                        .text("✔ Keep inventory for " + target.getName() + " enabled!")
                         .color(TextColor.color(140, 252, 3));
-                player.sendMessage(playerMessage);
-                if (!player.equals(executor)) executor.sendMessage(executorMessage);
+                target.sendMessage(playerMessage);
+                if (!target.equals(sender)) sender.sendMessage(executorMessage);
 
                 KeepInventoryUtil.keepInventory(persistentDataContainer, true);
-                new KeepInventorySwitcherEvent(player, executor, true);
+                new KeepInventorySwitcherEvent(target, sender, true);
                 break;
             }
             case "off": {
@@ -122,23 +122,23 @@ public final class KeepInventoryCommand {
                             .text("⚠ Keep inventory already disabled!")
                             .color(TextColor.color(252, 165, 3));
                     Component executorMessage = Component
-                            .text("⚠ Keep inventory for " + player.getName() + " already disabled!")
+                            .text("⚠ Keep inventory for " + target.getName() + " already disabled!")
                             .color(TextColor.color(252, 165, 3));
-                    if (player.equals(executor)) player.sendMessage(playerMessage);
-                    else executor.sendMessage(executorMessage);
+                    if (target.equals(sender)) target.sendMessage(playerMessage);
+                    else sender.sendMessage(executorMessage);
                     break;
                 }
                 Component playerMessage = Component
                         .text("✔ Keep inventory disabled!")
                         .color(TextColor.color(140, 252, 3));
                 Component executorMessage = Component
-                        .text("✔ Keep inventory for " + player.getName() + " disabled!")
+                        .text("✔ Keep inventory for " + target.getName() + " disabled!")
                         .color(TextColor.color(140, 252, 3));
-                player.sendMessage(playerMessage);
-                if (!player.equals(executor)) executor.sendMessage(executorMessage);
+                target.sendMessage(playerMessage);
+                if (!target.equals(sender)) sender.sendMessage(executorMessage);
 
                 KeepInventoryUtil.keepInventory(persistentDataContainer, false);
-                new KeepInventorySwitcherEvent(player, executor, false);
+                new KeepInventorySwitcherEvent(target, sender, false);
                 break;
             }
             case "check": {
@@ -154,11 +154,11 @@ public final class KeepInventoryCommand {
                         .color(TextColor.color(252, 165, 3))
                         .append(status);
                 Component executorMessage = Component
-                        .text("ℹ " + player.getName() + " keep inventory: ")
+                        .text("ℹ " + target.getName() + " keep inventory: ")
                         .color(TextColor.color(252, 165, 3))
                         .append(status);
-                if (player.equals(executor)) player.sendMessage(playerMessage);
-                else executor.sendMessage(executorMessage);
+                if (target.equals(sender)) target.sendMessage(playerMessage);
+                else sender.sendMessage(executorMessage);
                 break;
             }
             default: {
@@ -170,7 +170,7 @@ public final class KeepInventoryCommand {
                         .appendNewline()
                         .append(usageMessage)
                         .color(TextColor.color(252, 44, 3));
-                executor.sendMessage(message);
+                sender.sendMessage(message);
                 break;
             }
         }
