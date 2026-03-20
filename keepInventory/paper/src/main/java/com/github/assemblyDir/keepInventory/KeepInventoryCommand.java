@@ -1,181 +1,113 @@
 package com.github.assemblyDir.keepInventory;
 
-import com.github.assemblyDir.keepInventory.api.KeepInventorySwitcherEvent;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 public final class KeepInventoryCommand {
 
-    private static final String COMMAND_NAME = "keepinventory";
-    private static final Collection<String> COMMAND_ALIASES = List.of("keepinv");
+    private final String COMMAND_NAME = "keepinventory";
+    private final Collection<String> COMMAND_ALIASES = List.of("keepinv");
 
-    public static void register(@NotNull JavaPlugin instance) {
-        instance.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
-            commands.registrar().register(commandNode(), COMMAND_ALIASES)
+    private final KeepInventory plugin;
+    private final KeepInventoryPermissionManager permissionManager;
+    private final KeepInventoryStateManager stateManager;
+
+    KeepInventoryCommand(KeepInventory plugin, KeepInventoryPermissionManager permissionManager, KeepInventoryStateManager stateManager) {
+        this.plugin = plugin;
+        this.permissionManager = permissionManager;
+        this.stateManager = stateManager;
+
+        plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
+            register(commands.registrar())
         );
     }
 
-    private static LiteralCommandNode<CommandSourceStack> commandNode() {
-        var player = Commands.argument("player", ArgumentTypes.player())
-                .requires(req -> req.getSender().hasPermission(KeepInventoryPermissions.Permissions.COMMAND_OTHER.get()))
-                .executes(KeepInventoryCommand::execute);
-
-        var action = Commands.argument("action", StringArgumentType.word())
-                .requires(req -> req.getSender().hasPermission(KeepInventoryPermissions.Permissions.COMMAND_SELF.get()))
-                .suggests((ctx, builder) -> {
-                    List.of("on", "off", "check").forEach(builder::suggest);
-                    return builder.buildFuture();
-                })
-                .executes(KeepInventoryCommand::execute);
-
-        return Commands.literal(COMMAND_NAME)
-                .then(action.then(player))
-                .build();
+    private void register(Commands registrar) {
+        registrar.register(
+            Commands.literal(COMMAND_NAME)
+                .requires(sender -> sender.getSender().hasPermission(KeepInventoryPermissionManager.Permissions.COMMAND_SELF.node))
+                .then(
+                    Commands.argument("action", StringArgumentType.word())
+                        .then(
+                            Commands.argument("player", ArgumentTypes.player())
+                                .requires(sender -> sender.getSender().hasPermission(KeepInventoryPermissionManager.Permissions.COMMAND_OTHER.node))
+                                .executes(ctx -> execute(ctx, ctx.getArgument("player", Player.class)))
+                        )
+                        .suggests((ctx, builder) -> {
+                            List.of("on", "off", "check").forEach(builder::suggest);
+                            return builder.buildFuture();
+                        })
+                        .executes(ctx -> execute(ctx, null))
+                )
+                .build(),
+            COMMAND_ALIASES
+        );
     }
 
-    private static int execute(CommandContext<CommandSourceStack> ctx) {
-        CommandSender sender = ctx.getSource().getSender();
-
+    private int execute(CommandContext<CommandSourceStack> ctx, Player target) {
+        CommandSourceStack source = ctx.getSource();
+        CommandSender sender = source.getSender();
         String action = ctx.getArgument("action", String.class).toLowerCase();
-        Player target;
 
-        try {
-            String lastNodeName = ctx.getNodes().getLast().getNode().getName();
-            if (lastNodeName.equals("player")) {
-                PlayerSelectorArgumentResolver playerSelectorArgumentResolver = ctx.getArgument("player", PlayerSelectorArgumentResolver.class);
-                target = playerSelectorArgumentResolver.resolve(ctx.getSource()).getFirst();
-            } else {
-                if (!(sender instanceof Player)) {
-                    Component message = Component
-                            .text("⚠ Only players can use this subcommand")
-                            .color(TextColor.color(252, 165, 3));
-                    sender.getServer().getConsoleSender().sendMessage(message);
-                    return Command.SINGLE_SUCCESS;
-                }
-                else target = (Player) sender;
+        if (target == null) {
+            if (!(sender instanceof Player player)) {
+                sendMessage(sender, "<#fca503>⚠ Only players can use this subcommand");
+                return Command.SINGLE_SUCCESS;
             }
-        } catch (CommandSyntaxException exception) {
-            Component message = Component
-                    .text("⚠ " + exception.getMessage())
-                    .color(TextColor.color(252, 44, 3));
-            Component stackTrace = Component
-                    .text(Arrays.toString(exception.getStackTrace()))
-                    .color(TextColor.color(252, 44, 3));
-            Component consoleMessage = message
-                    .appendNewline()
-                    .append(stackTrace);
-            sender.sendMessage(message);
-            sender.getServer().getConsoleSender().sendMessage(consoleMessage);
-            return Command.SINGLE_SUCCESS;
+            target = player;
         }
 
-        PersistentDataContainer persistentDataContainer = target.getPersistentDataContainer();
-
         switch (action) {
-            case "on": {
-                if (KeepInventoryUtil.keepInventory(persistentDataContainer)) {
-                    Component playerMessage = Component
-                            .text("⚠ Keep inventory already enabled!")
-                            .color(TextColor.color(252, 165, 3));
-                    Component executorMessage = Component
-                            .text("⚠ Keep inventory for " + target.getName() + " already enabled!")
-                            .color(TextColor.color(252, 165, 3));
-                    if (target.equals(sender)) target.sendMessage(playerMessage);
-                    else sender.sendMessage(executorMessage);
-                    break;
-                }
-                Component playerMessage = Component
-                        .text("✔ Keep inventory enabled!")
-                        .color(TextColor.color(140, 252, 3));
-                Component executorMessage = Component
-                        .text("✔ Keep inventory for " + target.getName() + " enabled!")
-                        .color(TextColor.color(140, 252, 3));
-                target.sendMessage(playerMessage);
-                if (!target.equals(sender)) sender.sendMessage(executorMessage);
-
-                KeepInventoryUtil.keepInventory(persistentDataContainer, true);
-                new KeepInventorySwitcherEvent(target, sender, true);
-                break;
-            }
-            case "off": {
-                if (!KeepInventoryUtil.keepInventory(persistentDataContainer)) {
-                    Component playerMessage = Component
-                            .text("⚠ Keep inventory already disabled!")
-                            .color(TextColor.color(252, 165, 3));
-                    Component executorMessage = Component
-                            .text("⚠ Keep inventory for " + target.getName() + " already disabled!")
-                            .color(TextColor.color(252, 165, 3));
-                    if (target.equals(sender)) target.sendMessage(playerMessage);
-                    else sender.sendMessage(executorMessage);
-                    break;
-                }
-                Component playerMessage = Component
-                        .text("✔ Keep inventory disabled!")
-                        .color(TextColor.color(140, 252, 3));
-                Component executorMessage = Component
-                        .text("✔ Keep inventory for " + target.getName() + " disabled!")
-                        .color(TextColor.color(140, 252, 3));
-                target.sendMessage(playerMessage);
-                if (!target.equals(sender)) sender.sendMessage(executorMessage);
-
-                KeepInventoryUtil.keepInventory(persistentDataContainer, false);
-                new KeepInventorySwitcherEvent(target, sender, false);
-                break;
-            }
-            case "check": {
-                Component status;
-                if (KeepInventoryUtil.keepInventory(persistentDataContainer)) status = Component
-                        .text("Enabled")
-                        .color(TextColor.color(140, 252, 3));
-                else status = Component
-                        .text("Disabled")
-                        .color(TextColor.color(252, 44, 3));
-                Component playerMessage = Component
-                        .text("ℹ Keep inventory: ")
-                        .color(TextColor.color(252, 165, 3))
-                        .append(status);
-                Component executorMessage = Component
-                        .text("ℹ " + target.getName() + " keep inventory: ")
-                        .color(TextColor.color(252, 165, 3))
-                        .append(status);
-                if (target.equals(sender)) target.sendMessage(playerMessage);
-                else sender.sendMessage(executorMessage);
-                break;
-            }
-            default: {
-                Component errorMessage = Component
-                        .text("⚠ Unrecognized argument!");
-                Component usageMessage = Component
-                        .text("Use: /" + ctx.getInput().split(" ")[0] + " [on/off/check]");
-                Component message = errorMessage
-                        .appendNewline()
-                        .append(usageMessage)
-                        .color(TextColor.color(252, 44, 3));
-                sender.sendMessage(message);
-                break;
-            }
+            case "on" -> setKeepInventory(sender, target, true);
+            case "off" -> setKeepInventory(sender, target, false);
+            case "check" -> checkKeepInventory(sender, target);
+            default -> sendMessage(sender, "<#fc2c03>⚠ Unrecognized argument!<newline>Use: /" + ctx.getInput().split(" ")[0] + " [on/off/check]");
         }
 
         return Command.SINGLE_SUCCESS;
+    }
+
+    private void setKeepInventory(CommandSender sender, Player target, boolean enable) {
+        boolean currentState = stateManager.keepInventory(target);
+
+        String status = enable ? "enabled" : "disabled";
+        String action = enable ? "enable" : "disable";
+
+        if (currentState == enable) {
+            sendMessage(sender, "<#fca503>⚠ Keep inventory already " + status);
+            return;
+        }
+
+        stateManager.keepInventory(target, enable);
+
+        sendMessage(sender, "<#8cfc03>✔ Keep inventory " + getName(sender, target) + status);
+        if (!sender.equals(target)) sendMessage(target, "<#8cfc03>✔ Administrator " + action + " your keep inventory");
+    }
+
+    private void checkKeepInventory(CommandSender sender, Player target) {
+        boolean enabled = stateManager.keepInventory(target);
+        String status = enabled ? "<#8cfc03>Enabled" : "<#fc2c03>Disabled";
+        if (!sender.equals(target)) sendMessage(sender, "<#fca503>ℹ " + target.getName() + " keep inventory: " + status);
+        else sendMessage(sender, "<#fca503>ℹ Keep inventory: " + status);
+    }
+
+    private void sendMessage(CommandSender receiver, String message) {
+        receiver.sendMessage(MiniMessage.miniMessage().deserialize(message));
+    }
+
+    private String getName(CommandSender sender, Player target) {
+        return sender.equals(target) ? "" : "for " + target.getName() + " ";
     }
 
 }

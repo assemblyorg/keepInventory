@@ -6,10 +6,12 @@ public final class KeepInventory extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        KeepInventoryNamespacedKey.register(this);
-        KeepInventoryPermissions.register(this);
-        KeepInventoryListener.register(this);
-        KeepInventoryCommand.register(this);
+        KeepInventoryPermissionManager permissionManager = new KeepInventoryPermissionManager(this);
+        KeepInventoryStateManager stateManager = new KeepInventoryStateManager(this);
+
+        new KeepInventoryListener(this, stateManager);
+        new KeepInventoryCommand(this, permissionManager, stateManager);
+
         getLogger().info("plugin enabled");
     }
 
