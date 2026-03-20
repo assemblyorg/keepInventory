@@ -14,6 +14,10 @@ public class KeepInventoryDeathEvent extends PlayerDeathEvent {
         this.keepInventoryState = keepInventoryState;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
+    }
+
     public boolean getKeepInventoryState() {
         return keepInventoryState;
     }
@@ -23,18 +27,14 @@ public class KeepInventoryDeathEvent extends PlayerDeathEvent {
         return HANDLER_LIST;
     }
 
-    public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
     }
 
     @Override
     public void setCancelled(boolean cancel) {
         this.cancelled = cancel;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
     }
 
 }

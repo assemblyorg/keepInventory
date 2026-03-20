@@ -18,6 +18,10 @@ public class KeepInventorySwitcherEvent extends Event {
         this.keepInventoryState = keepInventoryState;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -28,10 +32,6 @@ public class KeepInventorySwitcherEvent extends Event {
 
     public boolean getKeepInventoryState() {
         return keepInventoryState;
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLER_LIST;
     }
 
     @Override
