@@ -3,7 +3,7 @@ plugins {
     com.gradleup.shadow
 }
 
-val java = 21
+val java = 25
 
 base {
     archivesName = "${rootProject.name}-${project.name}"

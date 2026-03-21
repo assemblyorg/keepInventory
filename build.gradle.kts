@@ -1,4 +1,4 @@
 allprojects {
-    group = "com.github.assemblyDir.keepInventory"
+    group = "com.github.assemblyorg.keepInventory"
     version = "1.1.0"
 }

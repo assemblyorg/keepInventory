@@ -1,4 +1,4 @@
-package com.github.assemblyDir.keepInventory.api;
+package com.github.assemblyorg.keepInventory.api;
 
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.PlayerDeathEvent;

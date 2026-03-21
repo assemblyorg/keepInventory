@@ -1,4 +1,4 @@
-package com.github.assemblyDir.keepInventory;
+package com.github.assemblyorg.keepInventory;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;

@@ -3,5 +3,5 @@ version: ${version}
 main: ${main}
 api-version: ${minecraft_version}
 authors: [ alexthegoood ]
-website: https://github.com/assemblyDir/keepInventory
+website: https://github.com/assemblyorg/keepInventory
 folia-supported: true
