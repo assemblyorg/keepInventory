@@ -5,20 +5,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerDeath implements Listener {
 
     private final StateToggle stateToggle;
 
-    public PlayerDeath(StateToggle stateToggle) {
+    public PlayerDeath(@NotNull StateToggle stateToggle) {
         this.stateToggle = stateToggle;
     }
 
     @EventHandler
     public void playerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getPlayer();
-        boolean keepInventoryEnabled = stateToggle.keepInventory(player);
 
+        boolean keepInventoryEnabled = stateToggle.keepInventory(player);
         if (keepInventoryEnabled) {
             event.setKeepInventory(true);
             event.setKeepLevel(true);

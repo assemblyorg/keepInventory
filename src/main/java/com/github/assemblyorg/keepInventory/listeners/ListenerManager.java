@@ -4,6 +4,7 @@ import com.github.assemblyorg.keepInventory.KeepInventory;
 import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.utils.UtilManager;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public final class ListenerManager {
     private final KeepInventory plugin;
     private final List<Listener> listeners = new ArrayList<>();
 
-    public ListenerManager(KeepInventory plugin, ConfigManager configManager, UtilManager utilManager) {
+    public ListenerManager(@NotNull KeepInventory plugin, @NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
         this.plugin = plugin;
 
         listeners.add(new PlayerDeath(utilManager.stateToggle()));

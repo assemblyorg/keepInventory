@@ -9,10 +9,11 @@ public final class KeepInventory extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        ConfigManager configManager = new ConfigManager(this);
-        UtilManager utilManager = new UtilManager(this, configManager);
+        var configManager = new ConfigManager(this);
+        var utilManager = new UtilManager(this, configManager);
+        var listenerManager = new ListenerManager(this, configManager, utilManager);
 
-        new ListenerManager(this, configManager, utilManager);
+        listenerManager.registerListeners();
 
         getLogger().info("Plugin keepInventory v2.0.0 enabled");
     }

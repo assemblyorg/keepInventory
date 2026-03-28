@@ -3,6 +3,8 @@ package com.github.assemblyorg.keepInventory.configs;
 import com.github.assemblyorg.keepInventory.KeepInventory;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +16,7 @@ public abstract class Config {
     private final File configFile;
     private FileConfiguration config;
 
-    public Config(KeepInventory plugin, String resourcePath) {
+    public Config(@NotNull KeepInventory plugin, @NotNull String resourcePath) {
         this.plugin = plugin;
         this.resourcePath = resourcePath;
         this.configFile = new File(plugin.getDataFolder(), resourcePath);
@@ -22,12 +24,14 @@ public abstract class Config {
     }
 
     public void reload() {
-        if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
+        File parentFile = configFile.getParentFile();
+        if (parentFile != null && !parentFile.exists()) parentFile.mkdirs();
         if (!configFile.exists()) plugin.saveResource(resourcePath, false);
         this.config = YamlConfiguration.loadConfiguration(configFile);
     }
 
     public void save() {
+        if (config == null) return;
         try {
             config.save(configFile);
         } catch (IOException e) {
@@ -35,9 +39,18 @@ public abstract class Config {
         }
     }
 
-    public FileConfiguration get() {
+    protected FileConfiguration get() {
         if (config == null) reload();
         return config;
+    }
+
+    protected void set(@NotNull String path, @Nullable Object value) {
+        set(path, value, false);
+    }
+
+    protected void set(@NotNull String path, @Nullable Object value, boolean save) {
+        this.config.set(path, value);
+        if (save) save();
     }
 
 }

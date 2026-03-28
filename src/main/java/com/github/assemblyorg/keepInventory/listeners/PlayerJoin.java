@@ -7,13 +7,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerJoin implements Listener {
 
     private final MainConfig mainConfig;
     private final StateToggle stateToggle;
 
-    public PlayerJoin(MainConfig mainConfig, StateToggle stateToggle) {
+    public PlayerJoin(@NotNull MainConfig mainConfig, @NotNull StateToggle stateToggle) {
         this.mainConfig = mainConfig;
         this.stateToggle = stateToggle;
     }
@@ -22,8 +23,8 @@ public class PlayerJoin implements Listener {
     public void playerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         PersistentDataContainer persistentDataContainer = player.getPersistentDataContainer();
-        boolean hasState = persistentDataContainer.has(stateToggle.namespacedKey());
 
+        boolean hasState = persistentDataContainer.has(stateToggle.namespacedKey());
         if (!hasState) stateToggle.keepInventory(player, mainConfig.defaultKeepInventoryState());
     }
 
