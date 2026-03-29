@@ -1,21 +1,29 @@
 package com.github.assemblyorg.keepInventory.commands;
 
+import com.github.assemblyorg.keepInventory.configs.ConfigManager;
+import com.github.assemblyorg.keepInventory.utils.UtilManager;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
 
-public interface Command {
+public abstract class Command {
 
-    LiteralCommandNode<CommandSourceStack> commandNode();
+    private final JavaPlugin plugin;
+    private final ConfigManager configManager;
+    private final UtilManager utilManager;
 
-    default String description() {
-        return "";
+    public Command(JavaPlugin plugin, ConfigManager configManager, UtilManager utilManager) {
+        this.plugin = plugin;
+        this.configManager = configManager;
+        this.utilManager = utilManager;
     }
 
-    default Collection<String> aliases() {
-        return Collections.emptyList();
-    }
+    public @NotNull abstract LiteralCommandNode<CommandSourceStack> commandNode();
+    public @Nullable abstract String description();
+    public @NotNull abstract Collection<String> aliases();
 
 }

@@ -1,6 +1,6 @@
 package com.github.assemblyorg.keepInventory.configs;
 
-import com.github.assemblyorg.keepInventory.KeepInventory;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public final class ConfigManager {
@@ -8,18 +8,16 @@ public final class ConfigManager {
     private final MainConfig mainConfig;
     private final MessagesConfig messagesConfig;
 
-    public ConfigManager(@NotNull KeepInventory plugin) {
+    public ConfigManager(@NotNull JavaPlugin plugin) {
         this.mainConfig = new MainConfig(plugin, "config.yml");
         this.messagesConfig = new MessagesConfig(plugin, "messages.yml");
     }
 
-    @NotNull
-    public MainConfig mainConfig() {
+    public @NotNull MainConfig mainConfig() {
         return mainConfig;
     }
 
-    @NotNull
-    public MessagesConfig messagesConfig() {
+    public @NotNull MessagesConfig messagesConfig() {
         return messagesConfig;
     }
 

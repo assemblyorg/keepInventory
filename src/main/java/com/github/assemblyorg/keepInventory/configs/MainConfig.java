@@ -1,21 +1,28 @@
 package com.github.assemblyorg.keepInventory.configs;
 
-import com.github.assemblyorg.keepInventory.KeepInventory;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class MainConfig extends Config {
 
-    public MainConfig(@NotNull KeepInventory plugin, @NotNull String resourcePath) {
+    public MainConfig(@NotNull JavaPlugin plugin, @NotNull String resourcePath) {
         super(plugin, resourcePath);
     }
 
-    @NotNull
-    public String keyName() {
+    public @NotNull String keyName() {
         return get().getString("key_name" , "keepInventory");
+    }
+
+    public void keyName(@NotNull String keyName) {
+        set("key_name", keyName);
     }
 
     public boolean defaultKeepInventoryState() {
         return get().getBoolean("default_keep_inventory_state", false);
+    }
+
+    public void defaultKeepInventoryState(boolean defaultKeepInventoryState) {
+        set("default_keep_inventory_state", defaultKeepInventoryState);
     }
 
 }

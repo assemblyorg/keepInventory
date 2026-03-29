@@ -1,11 +1,11 @@
 package com.github.assemblyorg.keepInventory.configs;
 
-import com.github.assemblyorg.keepInventory.KeepInventory;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class MessagesConfig extends Config {
 
-    public MessagesConfig(@NotNull KeepInventory plugin, @NotNull String resourcePath) {
+    public MessagesConfig(@NotNull JavaPlugin plugin, @NotNull String resourcePath) {
         super(plugin, resourcePath);
     }
 

@@ -1,27 +1,29 @@
 package com.github.assemblyorg.keepInventory.commands;
 
-import com.github.assemblyorg.keepInventory.KeepInventory;
+import com.github.assemblyorg.keepInventory.commands.keepInventoryCommand.KeepInventoryCommand;
 import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.utils.UtilManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class CommandManager {
 
-    private final KeepInventory plugin;
+    private final JavaPlugin plugin;
     private final ConfigManager configManager;
     private final UtilManager utilManager;
     private final List<Command> commands = new ArrayList<>();
 
-    public CommandManager(KeepInventory plugin, ConfigManager configManager, UtilManager utilManager) {
+    public CommandManager(@NotNull JavaPlugin plugin, @NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.utilManager = utilManager;
 
-        commands.add(new KeepInventoryCommand());
+        commands.add(new KeepInventoryCommand(plugin, configManager, utilManager));
     }
 
     public void registerCommands() {

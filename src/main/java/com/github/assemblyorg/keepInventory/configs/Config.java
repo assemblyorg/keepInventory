@@ -1,8 +1,8 @@
 package com.github.assemblyorg.keepInventory.configs;
 
-import com.github.assemblyorg.keepInventory.KeepInventory;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,12 +11,12 @@ import java.io.IOException;
 
 public abstract class Config {
 
-    private final KeepInventory plugin;
+    private final JavaPlugin plugin;
     private final String resourcePath;
     private final File configFile;
     private FileConfiguration config;
 
-    public Config(@NotNull KeepInventory plugin, @NotNull String resourcePath) {
+    public Config(@NotNull JavaPlugin plugin, @NotNull String resourcePath) {
         this.plugin = plugin;
         this.resourcePath = resourcePath;
         this.configFile = new File(plugin.getDataFolder(), resourcePath);
@@ -25,7 +25,7 @@ public abstract class Config {
 
     public void reload() {
         File parentFile = configFile.getParentFile();
-        if (parentFile != null && !parentFile.exists()) parentFile.mkdirs();
+        if (!parentFile.exists()) parentFile.mkdirs();
         if (!configFile.exists()) plugin.saveResource(resourcePath, false);
         this.config = YamlConfiguration.loadConfiguration(configFile);
     }
@@ -34,6 +34,8 @@ public abstract class Config {
         if (config == null) return;
         try {
             config.save(configFile);
+//            config.options().copyDefaults(true);
+//            config.options().parseComments(true);
         } catch (IOException e) {
             plugin.getLogger().severe("Could not save config to " + configFile.getName());
         }

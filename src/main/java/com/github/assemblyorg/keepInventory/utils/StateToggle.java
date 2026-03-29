@@ -1,10 +1,10 @@
 package com.github.assemblyorg.keepInventory.utils;
 
-import com.github.assemblyorg.keepInventory.KeepInventory;
 import com.github.assemblyorg.keepInventory.configs.MainConfig;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class StateToggle {
@@ -13,19 +13,17 @@ public class StateToggle {
     private final PersistentDataType<Byte, Boolean> persistentDataType;
     private final NamespacedKey namespacedKey;
 
-    public StateToggle(@NotNull KeepInventory plugin, @NotNull MainConfig mainConfig) {
+    public StateToggle(@NotNull JavaPlugin plugin, @NotNull MainConfig mainConfig) {
         this.mainConfig = mainConfig;
         this.persistentDataType = PersistentDataType.BOOLEAN;
         this.namespacedKey = new NamespacedKey(plugin, mainConfig.keyName());
     }
 
-    @NotNull
-    public PersistentDataType<Byte, Boolean> dataType() {
+    public @NotNull PersistentDataType<Byte, Boolean> dataType() {
         return persistentDataType;
     }
 
-    @NotNull
-    public NamespacedKey namespacedKey() {
+    public @NotNull NamespacedKey namespacedKey() {
         return namespacedKey;
     }
 
