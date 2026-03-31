@@ -1,9 +1,9 @@
 package com.github.assemblyorg.keepInventory;
 
-import com.github.assemblyorg.keepInventory.commands.Command;
 import com.github.assemblyorg.keepInventory.commands.CommandManager;
 import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.listeners.ListenerManager;
+import com.github.assemblyorg.keepInventory.permissions.PermissionManager;
 import com.github.assemblyorg.keepInventory.utils.UtilManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,10 +12,12 @@ public final class KeepInventory extends JavaPlugin {
     @Override
     public void onEnable() {
         var configManager = new ConfigManager(this);
+        var permissionManager = new PermissionManager(this);
         var utilManager = new UtilManager(this, configManager);
         var commandManager = new CommandManager(this, configManager, utilManager);
         var listenerManager = new ListenerManager(this, configManager, utilManager);
 
+        permissionManager.registerPermissions();
         commandManager.registerCommands();
         listenerManager.registerListeners();
 
