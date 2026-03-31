@@ -14,14 +14,10 @@ import java.util.List;
 public final class CommandManager {
 
     private final JavaPlugin plugin;
-    private final ConfigManager configManager;
-    private final UtilManager utilManager;
     private final List<Command> commands = new ArrayList<>();
 
     public CommandManager(@NotNull JavaPlugin plugin, @NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
         this.plugin = plugin;
-        this.configManager = configManager;
-        this.utilManager = utilManager;
 
         commands.add(new KeepInventoryCommand(plugin, configManager, utilManager));
     }
