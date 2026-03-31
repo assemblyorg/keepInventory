@@ -27,15 +27,15 @@ public abstract class Config {
         File parentFile = configFile.getParentFile();
         if (!parentFile.exists()) parentFile.mkdirs();
         if (!configFile.exists()) plugin.saveResource(resourcePath, false);
-        this.config = YamlConfiguration.loadConfiguration(configFile);
+
+        // https://github.com/tchristofferson/Config-Updater/ <- need to rewrite for this project
+
+        config = YamlConfiguration.loadConfiguration(configFile);
     }
 
     public void save() {
-        if (config == null) return;
         try {
             config.save(configFile);
-//            config.options().copyDefaults(true);
-//            config.options().parseComments(true);
         } catch (IOException e) {
             plugin.getLogger().severe("Could not save config to " + configFile.getName());
         }
@@ -51,7 +51,7 @@ public abstract class Config {
     }
 
     protected void set(@NotNull String path, @Nullable Object value, boolean save) {
-        this.config.set(path, value);
+        config.set(path, value);
         if (save) save();
     }
 

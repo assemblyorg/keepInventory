@@ -7,5 +7,9 @@
 # If you changed this field and someone already had inventory retention enabled, they will need to enable it again.
 key_name: "keepInventory"
 
-# Default inventory retention state
+# Default keep_inventory state
 default_keep_inventory_state: false
+
+# Aliases for the keepinventory command
+command_aliases:
+  - "keepinv"
