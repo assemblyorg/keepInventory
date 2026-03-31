@@ -12,8 +12,7 @@ public final class UtilManager {
         this.stateToggle = new StateToggle(plugin, configManager.mainConfig());
     }
 
-    @NotNull
-    public StateToggle stateToggle() {
+    public @NotNull StateToggle stateToggle() {
         return stateToggle;
     }
 
