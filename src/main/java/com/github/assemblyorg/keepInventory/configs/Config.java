@@ -41,16 +41,16 @@ public abstract class Config {
         }
     }
 
-    protected FileConfiguration get() {
+    public FileConfiguration get() {
         if (config == null) reload();
         return config;
     }
 
-    protected void set(@NotNull String path, @Nullable Object value) {
+    public void set(@NotNull String path, @Nullable Object value) {
         set(path, value, false);
     }
 
-    protected void set(@NotNull String path, @Nullable Object value, boolean save) {
+    public void set(@NotNull String path, @Nullable Object value, boolean save) {
         config.set(path, value);
         if (save) save();
     }

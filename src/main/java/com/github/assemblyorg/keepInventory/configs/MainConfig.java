@@ -15,16 +15,8 @@ public class MainConfig extends Config {
         return get().getString("key_name" , "keepInventory");
     }
 
-    public void keyName(@NotNull String keyName) {
-        set("key_name", keyName);
-    }
-
     public boolean defaultKeepInventoryState() {
         return get().getBoolean("default_keep_inventory_state", false);
-    }
-
-    public void defaultKeepInventoryState(boolean defaultKeepInventoryState) {
-        set("default_keep_inventory_state", defaultKeepInventoryState);
     }
 
     public List<String> commandAliases() {
