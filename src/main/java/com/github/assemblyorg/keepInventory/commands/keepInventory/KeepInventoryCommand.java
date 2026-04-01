@@ -1,8 +1,8 @@
-package com.github.assemblyorg.keepInventory.commands.keepInventoryCommand;
+package com.github.assemblyorg.keepInventory.commands.keepInventory;
 
 import com.github.assemblyorg.keepInventory.commands.Command;
-import com.github.assemblyorg.keepInventory.commands.keepInventoryCommand.subCommands.actionSubCommands.OnSubCommand;
-import com.github.assemblyorg.keepInventory.commands.keepInventoryCommand.subCommands.SubCommand;
+import com.github.assemblyorg.keepInventory.commands.keepInventory.subCommands.action.OnSubCommand;
+import com.github.assemblyorg.keepInventory.commands.keepInventory.subCommands.SubCommand;
 import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.configs.MainConfig;
 import com.github.assemblyorg.keepInventory.utils.UtilManager;

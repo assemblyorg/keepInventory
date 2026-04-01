@@ -1,4 +1,4 @@
-package com.github.assemblyorg.keepInventory.commands.keepInventoryCommand.subCommands;
+package com.github.assemblyorg.keepInventory.commands.keepInventory.subCommands;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

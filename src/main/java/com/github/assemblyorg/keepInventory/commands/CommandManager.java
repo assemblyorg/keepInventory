@@ -1,6 +1,6 @@
 package com.github.assemblyorg.keepInventory.commands;
 
-import com.github.assemblyorg.keepInventory.commands.keepInventoryCommand.KeepInventoryCommand;
+import com.github.assemblyorg.keepInventory.commands.keepInventory.KeepInventoryCommand;
 import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.utils.UtilManager;
 import io.papermc.paper.command.brigadier.Commands;

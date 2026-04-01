@@ -1,6 +1,6 @@
-package com.github.assemblyorg.keepInventory.commands.keepInventoryCommand.subCommands.actionSubCommands;
+package com.github.assemblyorg.keepInventory.commands.keepInventory.subCommands.action;
 
-import com.github.assemblyorg.keepInventory.commands.keepInventoryCommand.subCommands.SubCommand;
+import com.github.assemblyorg.keepInventory.commands.keepInventory.subCommands.SubCommand;
 import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.utils.StateToggle;
 import com.github.assemblyorg.keepInventory.utils.UtilManager;
