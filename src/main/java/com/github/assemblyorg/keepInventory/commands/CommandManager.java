@@ -8,18 +8,18 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class CommandManager {
 
     private final JavaPlugin plugin;
-    private final List<Command> commands = new ArrayList<>();
+    private final List<Command> commands;
 
     public CommandManager(@NotNull JavaPlugin plugin, @NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
         this.plugin = plugin;
-
-        commands.add(new KeepInventoryCommand(plugin, configManager, utilManager));
+        this.commands = List.of(
+            new KeepInventoryCommand(plugin, configManager, utilManager)
+        );
     }
 
     public void registerCommands() {

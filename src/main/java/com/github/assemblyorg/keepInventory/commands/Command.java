@@ -5,19 +5,19 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public interface Command {
 
     @NotNull LiteralCommandNode<CommandSourceStack> commandNode();
 
     default @Nullable String description() {
-        return "";
+        return null;
     }
 
-    default @NotNull Collection<String> aliases() {
-        return Collections.emptyList();
+    default @NotNull List<String> aliases() {
+        return List.of();
     }
 
 }
