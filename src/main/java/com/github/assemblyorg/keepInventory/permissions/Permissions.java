@@ -9,8 +9,11 @@ import java.util.Map;
 
 public enum Permissions {
 
-    COMMAND_SELF("keepinventory.command.self", null, Permission.DEFAULT_PERMISSION, null),
-    COMMAND_OTHER("keepinventory.command.other", null, Permission.DEFAULT_PERMISSION, Map.of(COMMAND_SELF.id(), true));
+    COMMAND_USE("keepinventory.command.use", null, Permission.DEFAULT_PERMISSION, null),
+    COMMAND_OTHER("keepinventory.command.other", null, Permission.DEFAULT_PERMISSION, Map.of(COMMAND_USE.id(), true)),
+    COMMAND_STATE_ON("keepinventory.command.state.on", null, Permission.DEFAULT_PERMISSION, Map.of(COMMAND_USE.id(), true)),
+    COMMAND_STATE_OFF("keepinventory.command.state.off", null, Permission.DEFAULT_PERMISSION, Map.of(COMMAND_USE.id(), true)),
+    COMMAND_STATE_CHECK("keepinventory.command.state.check", null, Permission.DEFAULT_PERMISSION, Map.of(COMMAND_USE.id(), true));
 
     private final String id;
     private final String description;
