@@ -11,16 +11,19 @@ public class MainConfig extends Config {
         super(plugin, resourcePath);
     }
 
-    public @NotNull String keyName() {
-        return get().getString("key_name" , "keepInventory");
+    public @NotNull String key_name() {
+        String path = "key_name";
+        return get().getString(path , getDefault().getString(path, ""));
     }
 
-    public boolean defaultKeepInventoryState() {
-        return get().getBoolean("default_keep_inventory_state", false);
+    public boolean default_keep_inventory_state() {
+        String path = "default_keep_inventory_state";
+        return get().getBoolean(path, getDefault().getBoolean(path));
     }
 
-    public List<String> commandAliases() {
-        return get().getStringList("command_aliases");
+    public List<String> command_aliases() {
+        String path = "command_aliases";
+        return get().getStringList(path);
     }
 
 }

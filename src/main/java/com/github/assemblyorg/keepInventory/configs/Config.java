@@ -15,12 +15,14 @@ public abstract class Config {
     private final String resourcePath;
     private final File configFile;
     private FileConfiguration config;
+    private FileConfiguration configDefault;
 
     public Config(@NotNull JavaPlugin plugin, @NotNull String resourcePath) {
         this.plugin = plugin;
         this.resourcePath = resourcePath;
         this.configFile = new File(plugin.getDataFolder(), resourcePath);
         reload();
+        this.configDefault = config;
     }
 
     public void reload() {
@@ -42,8 +44,11 @@ public abstract class Config {
     }
 
     public FileConfiguration get() {
-        if (config == null) reload();
         return config;
+    }
+
+    public FileConfiguration getDefault() {
+        return configDefault;
     }
 
     public void set(@NotNull String path, @Nullable Object value) {

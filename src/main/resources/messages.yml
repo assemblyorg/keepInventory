@@ -2,3 +2,17 @@
 # Messages configuration file
 # KeepInventory version: 2.0.0
 #
+
+command:
+  only_players: ""
+  on:
+    message: ""
+    already: ""
+  off:
+    message: ""
+    already: ""
+  check:
+    message: ""
+    status:
+      enabled: ""
+      disabled: ""
