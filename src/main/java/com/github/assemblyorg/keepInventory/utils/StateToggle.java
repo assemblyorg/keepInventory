@@ -1,5 +1,6 @@
 package com.github.assemblyorg.keepInventory.utils;
 
+import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.configs.MainConfig;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -13,10 +14,10 @@ public class StateToggle {
     private final PersistentDataType<Byte, Boolean> persistentDataType;
     private final NamespacedKey namespacedKey;
 
-    public StateToggle(@NotNull JavaPlugin plugin, @NotNull MainConfig mainConfig) {
-        this.mainConfig = mainConfig;
+    public StateToggle(@NotNull JavaPlugin plugin, @NotNull ConfigManager configManager) {
+        this.mainConfig = configManager.mainConfig();
         this.persistentDataType = PersistentDataType.BOOLEAN;
-        this.namespacedKey = new NamespacedKey(plugin, mainConfig.keyName());
+        this.namespacedKey = new NamespacedKey(plugin, mainConfig.key_name());
     }
 
     public @NotNull PersistentDataType<Byte, Boolean> dataType() {
@@ -28,7 +29,7 @@ public class StateToggle {
     }
 
     public boolean keepInventory(@NotNull Player player) {
-        return player.getPersistentDataContainer().getOrDefault(namespacedKey, persistentDataType, mainConfig.defaultKeepInventoryState());
+        return player.getPersistentDataContainer().getOrDefault(namespacedKey, persistentDataType, mainConfig.default_keep_inventory_state());
     }
 
     public void keepInventory(@NotNull Player player, boolean enabled) {
