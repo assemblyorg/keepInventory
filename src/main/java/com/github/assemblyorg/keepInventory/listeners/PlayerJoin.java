@@ -1,7 +1,9 @@
 package com.github.assemblyorg.keepInventory.listeners;
 
+import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.configs.MainConfig;
 import com.github.assemblyorg.keepInventory.utils.StateToggle;
+import com.github.assemblyorg.keepInventory.utils.UtilManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,9 +16,9 @@ public class PlayerJoin implements Listener {
     private final MainConfig mainConfig;
     private final StateToggle stateToggle;
 
-    public PlayerJoin(@NotNull MainConfig mainConfig, @NotNull StateToggle stateToggle) {
-        this.mainConfig = mainConfig;
-        this.stateToggle = stateToggle;
+    public PlayerJoin(@NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
+        this.mainConfig = configManager.mainConfig();
+        this.stateToggle = utilManager.stateToggle();
     }
 
     @EventHandler
@@ -25,7 +27,7 @@ public class PlayerJoin implements Listener {
         PersistentDataContainer persistentDataContainer = player.getPersistentDataContainer();
 
         boolean hasState = persistentDataContainer.has(stateToggle.namespacedKey());
-        if (!hasState) stateToggle.keepInventory(player, mainConfig.defaultKeepInventoryState());
+        if (!hasState) stateToggle.keepInventory(player, mainConfig.default_keep_inventory_state());
     }
 
 }

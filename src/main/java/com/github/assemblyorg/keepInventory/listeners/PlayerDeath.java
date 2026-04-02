@@ -1,6 +1,7 @@
 package com.github.assemblyorg.keepInventory.listeners;
 
 import com.github.assemblyorg.keepInventory.utils.StateToggle;
+import com.github.assemblyorg.keepInventory.utils.UtilManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,8 +12,8 @@ public class PlayerDeath implements Listener {
 
     private final StateToggle stateToggle;
 
-    public PlayerDeath(@NotNull StateToggle stateToggle) {
-        this.stateToggle = stateToggle;
+    public PlayerDeath(@NotNull UtilManager utilManager) {
+        this.stateToggle = utilManager.stateToggle();
     }
 
     @EventHandler

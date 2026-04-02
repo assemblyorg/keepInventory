@@ -16,8 +16,8 @@ public final class ListenerManager {
     public ListenerManager(@NotNull JavaPlugin plugin, @NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
         this.plugin = plugin;
         this.listeners = List.of(
-            new PlayerDeath(utilManager.stateToggle()),
-            new PlayerJoin(configManager.mainConfig(), utilManager.stateToggle())
+            new PlayerDeath(utilManager),
+            new PlayerJoin(configManager, utilManager)
         );
     }
 
