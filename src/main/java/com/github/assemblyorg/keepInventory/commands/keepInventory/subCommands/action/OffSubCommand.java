@@ -4,8 +4,8 @@ import com.github.assemblyorg.keepInventory.commands.keepInventory.subCommands.S
 import com.github.assemblyorg.keepInventory.configs.ConfigManager;
 import com.github.assemblyorg.keepInventory.configs.MessagesConfig;
 import com.github.assemblyorg.keepInventory.permissions.Permissions;
-import com.github.assemblyorg.keepInventory.utils.MiniMessages;
 import com.github.assemblyorg.keepInventory.utils.CommandContextResolver;
+import com.github.assemblyorg.keepInventory.utils.MiniMessages;
 import com.github.assemblyorg.keepInventory.utils.StateToggle;
 import com.github.assemblyorg.keepInventory.utils.UtilManager;
 import com.mojang.brigadier.Command;
@@ -18,19 +18,18 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Map;
 
-public class OnSubCommand implements SubCommand {
+public class OffSubCommand implements SubCommand {
 
     private final MessagesConfig messagesConfig;
     private final StateToggle stateToggle;
     private final CommandContextResolver commandContextResolver;
     private final MiniMessages miniMessages;
 
-    public OnSubCommand(@NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
+    public OffSubCommand(@NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
         this.messagesConfig = configManager.messagesConfig();
         this.stateToggle = utilManager.stateToggle();
         this.commandContextResolver = utilManager.commandContextResolver();
@@ -38,10 +37,10 @@ public class OnSubCommand implements SubCommand {
     }
 
     @Override
-    public @NonNull List<ArgumentBuilder<CommandSourceStack, ?>> argument() {
+    public @NotNull List<ArgumentBuilder<CommandSourceStack, ?>> argument() {
         return List.of(
-                Commands.literal("on")
-                        .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_STATE_ON.id()))
+                Commands.literal("off")
+                        .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_STATE_OFF.id()))
                         .executes(this::execute)
                         .then(Commands.argument("players", ArgumentTypes.players())
                                 .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_OTHER.id()))
@@ -72,17 +71,17 @@ public class OnSubCommand implements SubCommand {
                     "sender", commandSender.getName(),
                     "target", target.getName()
             );
-            if (stateToggle.keepInventory(target)) {
-                String targetMessage = messagesConfig.command_on_already();
-                String senderMessage = messagesConfig.command_on_already_for_sender();
+            if (!stateToggle.keepInventory(target)) {
+                String targetMessage = messagesConfig.command_off_already();
+                String senderMessage = messagesConfig.command_off_already_for_sender();
                 Component targetText = miniMessages.deserialize(targetMessage, placeholders);
                 Component senderText = miniMessages.deserialize(senderMessage, placeholders);
                 target.sendMessage(targetText);
                 if (target.equals(commandSender)) target.sendMessage(targetText);
                 else commandSender.sendMessage(senderText);
             } else {
-                String targetMessage = messagesConfig.command_on_message();
-                String senderMessage = messagesConfig.command_on_message_for_sender();
+                String targetMessage = messagesConfig.command_off_message();
+                String senderMessage = messagesConfig.command_off_message_for_sender();
                 Component targetText = miniMessages.deserialize(targetMessage, placeholders);
                 Component senderText = miniMessages.deserialize(senderMessage, placeholders);
                 target.sendMessage(targetText);
@@ -93,5 +92,4 @@ public class OnSubCommand implements SubCommand {
 
         return Command.SINGLE_SUCCESS;
     }
-
 }

@@ -15,6 +15,10 @@ public class MiniMessages {
         this.miniMessage = MiniMessage.miniMessage();
     }
 
+    public MiniMessage miniMessage() {
+        return miniMessage;
+    }
+
     public Component deserialize(String message) {
         return miniMessage.deserialize(message);
     }

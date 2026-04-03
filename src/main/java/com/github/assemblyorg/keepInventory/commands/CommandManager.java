@@ -39,9 +39,10 @@ public final class CommandManager {
     /keepinventory off
     /keepinventory off player
     /keepinventory check
+    /keepinventory check player
     /keepinventory config reload
+    /keepInventory config get key
     /keepinventory config set key value
-    /keepinventory config restore
 
     CommandManager:
     RootCommand:

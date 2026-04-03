@@ -1,5 +1,6 @@
 package com.github.assemblyorg.keepInventory.commands;
 
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,10 @@ public interface Command {
 
     default @NotNull List<String> aliases() {
         return List.of();
+    }
+
+    default int execute(CommandContext<CommandSourceStack> ctx) {
+        return com.mojang.brigadier.Command.SINGLE_SUCCESS;
     }
 
 }

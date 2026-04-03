@@ -19,8 +19,18 @@ public class MessagesConfig extends Config {
         return get().getString(path, getDefault().getString(path, ""));
     }
 
+    public @NotNull String command_on_message_for_sender() {
+        String path = "command.on.message_for_sender";
+        return get().getString(path, getDefault().getString(path, ""));
+    }
+
     public @NotNull String command_on_already() {
         String path = "command.on.already";
+        return get().getString(path, getDefault().getString(path, ""));
+    }
+
+    public @NotNull String command_on_already_for_sender() {
+        String path = "command.on.already_for_sender";
         return get().getString(path, getDefault().getString(path, ""));
     }
 
@@ -29,13 +39,28 @@ public class MessagesConfig extends Config {
         return get().getString(path, getDefault().getString(path, ""));
     }
 
+    public @NotNull String command_off_message_for_sender() {
+        String path = "command.off.message_for_sender";
+        return get().getString(path, getDefault().getString(path, ""));
+    }
+
     public @NotNull String command_off_already() {
         String path = "command.off.already";
         return get().getString(path, getDefault().getString(path, ""));
     }
 
+    public @NotNull String command_off_already_for_sender() {
+        String path = "command.off.already_for_sender";
+        return get().getString(path, getDefault().getString(path, ""));
+    }
+
     public @NotNull String command_check_message() {
         String path = "command.check.message";
+        return get().getString(path, getDefault().getString(path, ""));
+    }
+
+    public @NotNull String command_check_message_for_sender() {
+        String path = "command.check.message_for_sender";
         return get().getString(path, getDefault().getString(path, ""));
     }
 

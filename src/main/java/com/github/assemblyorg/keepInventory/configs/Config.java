@@ -8,21 +8,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public abstract class Config {
 
     private final JavaPlugin plugin;
     private final String resourcePath;
     private final File configFile;
+    private final FileConfiguration configDefault;
     private FileConfiguration config;
-    private FileConfiguration configDefault;
 
     public Config(@NotNull JavaPlugin plugin, @NotNull String resourcePath) {
         this.plugin = plugin;
         this.resourcePath = resourcePath;
         this.configFile = new File(plugin.getDataFolder(), resourcePath);
+        this.configDefault = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource(resourcePath)), StandardCharsets.UTF_8));
         reload();
-        this.configDefault = config;
     }
 
     public void reload() {

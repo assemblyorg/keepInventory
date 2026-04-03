@@ -7,12 +7,17 @@ command:
   only_players: ""
   on:
     message: ""
+    message_for_sender: ""
     already: ""
+    already_for_sender: ""
   off:
     message: ""
+    message_for_sender: ""
     already: ""
+    already_for_sender: ""
   check:
     message: ""
+    message_for_sender: ""
     status:
       enabled: ""
       disabled: ""
