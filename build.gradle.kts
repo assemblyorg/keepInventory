@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("xyz.jpenilla.run-paper") version "3.1.0"
+    id("com.modrinth.minotaur") version "2.+"
     id("maven-publish")
 }
 
@@ -49,4 +50,20 @@ publishing {
             from(components["java"])
         }
     }
+}
+
+modrinth {
+    token.set(System.getenv("MODRINTH_TOKEN"))
+    projectId.set("keepinventorymc")
+
+    versionName.set(project.version.toString())
+    versionNumber.set(project.version.toString())
+    versionType.set("release")
+
+    uploadFile.set(tasks.jar)
+
+    gameVersions.add(libs.versions.minecraft)
+    loaders.addAll("paper", "folia", "purpur")
+
+    syncBodyFrom.set(rootProject.file("README.md").readText())
 }
