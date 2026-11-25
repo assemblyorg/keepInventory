@@ -1,4 +1,4 @@
-package com.github.assemblyorg.keepInventory.commands;
+package com.github.assemblyorg.keepInventory.command;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -6,7 +6,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 
 public interface Command {

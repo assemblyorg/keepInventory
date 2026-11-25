@@ -1,0 +1,6 @@
+[versions]
+minecraft = "26.3"
+paperapi = "26.3.build.+"
+
+[libraries]
+paperapi = { module = "io.papermc.paper:paper-api", version.ref = "paperapi" }

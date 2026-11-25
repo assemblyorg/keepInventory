@@ -1,22 +1,14 @@
 plugins {
     id("java")
-    id("xyz.jpenilla.run-paper") version "3.0.1"
+    id("xyz.jpenilla.run-paper") version "3.1.0"
     id("maven-publish")
 }
 
 group = "com.github.assemblyorg.keepInventory"
-version = "2.0.0"
-
-val java = 21
-val minecraftVersion = "1.21.11"
+version = "26.3-1.0"
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(java)
-}
-
-tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "UTF-8"
-    options.release = java
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
 }
 
 repositories {
@@ -24,24 +16,27 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    compileOnly(libs.paperapi)
 }
 
-tasks.runServer {
-    minecraftVersion(minecraftVersion)
-}
+tasks {
+    runServer {
+        minecraftVersion(libs.versions.minecraft.get())
+        jvmArgs("-Xms2G", "-Xmx2G", "-Dcom.mojang.eula.agree=true")
+    }
 
-tasks.processResources {
-    val properties = mapOf(
-        "name" to rootProject.name,
-        "version" to project.version,
-        "main" to "${project.group}.KeepInventory",
-        "minecraft_version" to minecraftVersion,
-    )
-    inputs.properties(properties)
-    filteringCharset = "UTF-8"
-    filesMatching("paper-plugin.yml") {
-        expand(properties)
+    processResources {
+        val properties = mapOf(
+            "name" to rootProject.name,
+            "version" to project.version,
+            "minecraft" to libs.versions.minecraft.get(),
+        )
+
+        inputs.properties(properties)
+        filteringCharset = "UTF-8"
+        filesMatching("paper-plugin.yml") {
+            expand(properties)
+        }
     }
 }
 

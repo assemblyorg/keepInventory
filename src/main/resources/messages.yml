@@ -4,20 +4,26 @@
 #
 
 command:
-  only_players: ""
-  on:
-    message: ""
-    message_for_sender: ""
-    already: ""
-    already_for_sender: ""
-  off:
-    message: ""
-    message_for_sender: ""
-    already: ""
-    already_for_sender: ""
-  check:
-    message: ""
-    message_for_sender: ""
+  # You can use the <error> placeholder here
+  error: "<#FC2C03>⚠ An error occurred while executing the command"
+  # You can use the <sender> placeholder here
+  only_players: "<#FCA503>⚠ Only players can use a subcommand"
+
+  subcommand_on: # You can use the <sender> and <target> placeholders here
+    message: "<#8CFC03>✔ Keep inventory enabled!"
+    message_for_sender: "<#8CFC03>✔ Keep inventory for <target> enabled!"
+    already: "<#FCA503>⚠ Keep inventory already enabled!"
+    already_for_sender: "<#FCA503>⚠ Keep inventory for <target> already enabled!"
+
+  subcommand_off: # You can use the <sender> and <target> placeholders here
+    message: "<#8CFC03>✔ Keep inventory disabled!"
+    message_for_sender: "<#8CFC03>✔ Keep inventory for <target> disabled!"
+    already: "<#FCA503>⚠ Keep inventory already disabled!"
+    already_for_sender: "<#FCA503>⚠ Keep inventory for <target> already disabled!"
+
+  subcommand_check: # You can use the <sender>, <target> and <status> placeholders here
+    message: "<#FCA503>ℹ Keep inventory: <status>"
+    message_for_sender: "<#FCA503>ℹ Keep inventory for <target>: <status>"
     status:
-      enabled: ""
-      disabled: ""
+      enabled: "<#8CFC03>Enabled"
+      disabled: "<#FC2C03>Disabled"

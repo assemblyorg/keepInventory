@@ -1,38 +1,35 @@
-package com.github.assemblyorg.keepInventory.configs;
+package com.github.assemblyorg.keepInventory.config;
 
+import com.github.assemblyorg.keepInventory.KeepInventory;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public abstract class Config {
 
-    private final JavaPlugin plugin;
     private final String resourcePath;
     private final File configFile;
     private final FileConfiguration configDefault;
     private FileConfiguration config;
 
-    public Config(@NotNull JavaPlugin plugin, @NotNull String resourcePath) {
-        this.plugin = plugin;
+    public Config(@NotNull String resourcePath) {
         this.resourcePath = resourcePath;
-        this.configFile = new File(plugin.getDataFolder(), resourcePath);
-        this.configDefault = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource(resourcePath)), StandardCharsets.UTF_8));
+        this.configFile = new File(KeepInventory.instance().getDataFolder(), resourcePath);
+        this.configDefault = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(KeepInventory.instance().getResource(resourcePath)), StandardCharsets.UTF_8));
         reload();
     }
 
     public void reload() {
         File parentFile = configFile.getParentFile();
         if (!parentFile.exists()) parentFile.mkdirs();
-        if (!configFile.exists()) plugin.saveResource(resourcePath, false);
+        if (!configFile.exists()) KeepInventory.instance().saveResource(resourcePath, false);
 
         // https://github.com/tchristofferson/Config-Updater/ <- need to rewrite for this project
 
@@ -43,7 +40,7 @@ public abstract class Config {
         try {
             config.save(configFile);
         } catch (IOException e) {
-            plugin.getLogger().severe("Could not save config to " + configFile.getName());
+            KeepInventory.instance().getComponentLogger().error("Could not save config to {}", configFile.getName());
         }
     }
 

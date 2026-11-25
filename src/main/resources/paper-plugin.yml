@@ -1,7 +1,7 @@
 name: ${name}
 version: ${version}
-main: ${main}
-api-version: ${minecraft_version}
+main: com.github.assemblyorg.keepInventory.KeepInventory
+api-version: ${minecraft}
 authors: [ alexthegoood ]
 website: https://github.com/assemblyorg/keepInventory
 folia-supported: true

@@ -1,32 +1,46 @@
 package com.github.assemblyorg.keepInventory;
 
-import com.github.assemblyorg.keepInventory.commands.CommandManager;
-import com.github.assemblyorg.keepInventory.configs.ConfigManager;
-import com.github.assemblyorg.keepInventory.listeners.ListenerManager;
-import com.github.assemblyorg.keepInventory.permissions.PermissionManager;
-import com.github.assemblyorg.keepInventory.utils.UtilManager;
+import com.github.assemblyorg.keepInventory.command.CommandManager;
+import com.github.assemblyorg.keepInventory.listener.ListenerManager;
+import com.github.assemblyorg.keepInventory.permission.Permissions;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class KeepInventory extends JavaPlugin {
 
+    private static KeepInventory INSTANCE;
+
+    public static KeepInventory instance() {
+        assert INSTANCE != null;
+        return INSTANCE;
+    }
+
+    @Override
+    public void onLoad() {
+        try {
+            INSTANCE = this;
+        } finally {
+            getComponentLogger().info("Loading complete");
+        }
+    }
+
     @Override
     public void onEnable() {
-        var configManager = new ConfigManager(this);
-        var permissionManager = new PermissionManager(this);
-        var utilManager = new UtilManager(this, configManager);
-        var commandManager = new CommandManager(this, configManager, utilManager);
-        var listenerManager = new ListenerManager(this, configManager, utilManager);
-
-        permissionManager.registerPermissions();
-        commandManager.registerCommands();
-        listenerManager.registerListeners();
-
-        getLogger().info("Plugin keepInventory v2.0.0 enabled");
+        try {
+            Permissions.registerPermissions();
+            ListenerManager.registerListeners();
+            CommandManager.registerCommands();
+        } finally {
+            getLogger().info("Enabling complete");
+        }
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Plugin keepInventory v2.0.0 disabled");
+        try {
+
+        } finally {
+            getLogger().info("Disabling complete");
+        }
     }
 
 }

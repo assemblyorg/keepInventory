@@ -1,29 +1,18 @@
-package com.github.assemblyorg.keepInventory.commands;
+package com.github.assemblyorg.keepInventory.command;
 
-import com.github.assemblyorg.keepInventory.commands.keepInventory.KeepInventoryCommand;
-import com.github.assemblyorg.keepInventory.configs.ConfigManager;
-import com.github.assemblyorg.keepInventory.utils.UtilManager;
+import com.github.assemblyorg.keepInventory.KeepInventory;
+import com.github.assemblyorg.keepInventory.command.keepInventory.KeepInventoryCommand;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public final class CommandManager {
 
-    private final JavaPlugin plugin;
-    private final List<Command> commands;
+    private static final Command[] commands = {
+            new KeepInventoryCommand()
+    };
 
-    public CommandManager(@NotNull JavaPlugin plugin, @NotNull ConfigManager configManager, @NotNull UtilManager utilManager) {
-        this.plugin = plugin;
-        this.commands = List.of(
-            new KeepInventoryCommand(plugin, configManager, utilManager)
-        );
-    }
-
-    public void registerCommands() {
-        plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, ctx -> {
+    public static void registerCommands() {
+        KeepInventory.instance().getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, ctx -> {
             Commands registrar = ctx.registrar();
             for (Command command : commands) {
                 registrar.register(command.commandNode(), command.description(), command.aliases());

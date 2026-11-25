@@ -1,24 +1,29 @@
-package com.github.assemblyorg.keepInventory.configs;
+package com.github.assemblyorg.keepInventory.config;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class MainConfig extends Config {
 
-    public MainConfig(@NotNull JavaPlugin plugin, @NotNull String resourcePath) {
-        super(plugin, resourcePath);
+    private static final MainConfig INSTANCE = new MainConfig("config.yml");
+
+    private MainConfig(String resourcePath) {
+        super(resourcePath);
+    }
+
+    public static MainConfig instance() {
+        return INSTANCE;
     }
 
     public @NotNull String key_name() {
         String path = "key_name";
-        return get().getString(path , getDefault().getString(path, ""));
+        return get().getString(path , getDefault().getString(path, "keepInventory"));
     }
 
     public boolean default_keep_inventory_state() {
         String path = "default_keep_inventory_state";
-        return get().getBoolean(path, getDefault().getBoolean(path));
+        return get().getBoolean(path, getDefault().getBoolean(path, false));
     }
 
     public List<String> command_aliases() {
