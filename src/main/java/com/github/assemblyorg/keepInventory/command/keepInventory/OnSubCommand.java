@@ -1,6 +1,6 @@
-package com.github.assemblyorg.keepInventory.command.keepInventory.subCommands.action;
+package com.github.assemblyorg.keepInventory.command.keepInventory;
 
-import com.github.assemblyorg.keepInventory.command.keepInventory.subCommands.SubCommand;
+import com.github.assemblyorg.keepInventory.command.SubCommand;
 import com.github.assemblyorg.keepInventory.config.MessagesConfig;
 import com.github.assemblyorg.keepInventory.permission.Permissions;
 import com.github.assemblyorg.keepInventory.util.CommandUtils;
@@ -20,13 +20,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class OffSubCommand implements SubCommand {
+public class OnSubCommand implements SubCommand {
 
     @Override
     public @NotNull List<ArgumentBuilder<CommandSourceStack, ?>> argument() {
         return List.of(
-                Commands.literal("off")
-                        .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_STATE_OFF.permission()))
+                Commands.literal("on")
+                        .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_STATE_ON.permission()))
                         .executes(this::execute)
                         .then(Commands.argument("players", ArgumentTypes.players())
                                 .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_OTHER.permission()))
@@ -47,30 +47,31 @@ public class OffSubCommand implements SubCommand {
         for (Player target : targets) {
             TagResolver[] tagResolvers = {
                     Placeholder.unparsed("sender", commandSender.getName()),
-                    Placeholder.unparsed("target", target.getName()),
+                    Placeholder.unparsed("target", target.getName())
             };
-            if (!StateToggleUtils.keepInventory(target)) {
+            if (StateToggleUtils.keepInventory(target)) {
                 target.sendMessage(MiniMessage.miniMessage().deserialize(
-                        MessagesConfig.instance().command_off_already(),
+                        MessagesConfig.instance().command_on_already(),
                         tagResolvers
                 ));
                 if (!target.equals(commandSender)) commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
-                        MessagesConfig.instance().command_off_already_for_sender(),
+                        MessagesConfig.instance().command_on_already_for_sender(),
                         tagResolvers
                 ));
             } else {
                 target.sendMessage(MiniMessage.miniMessage().deserialize(
-                        MessagesConfig.instance().command_off_message(),
+                        MessagesConfig.instance().command_on_message(),
                         tagResolvers
                 ));
                 if (!target.equals(commandSender)) commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
-                        MessagesConfig.instance().command_off_message_for_sender(),
+                        MessagesConfig.instance().command_on_message_for_sender(),
                         tagResolvers
                 ));
-                StateToggleUtils.keepInventory(target, false);
+                StateToggleUtils.keepInventory(target, true);
             }
         }
 
         return Command.SINGLE_SUCCESS;
     }
+
 }

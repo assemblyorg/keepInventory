@@ -1,10 +1,7 @@
 package com.github.assemblyorg.keepInventory.command.keepInventory;
 
 import com.github.assemblyorg.keepInventory.command.Command;
-import com.github.assemblyorg.keepInventory.command.keepInventory.subCommands.action.CheckSubCommand;
-import com.github.assemblyorg.keepInventory.command.keepInventory.subCommands.action.OffSubCommand;
-import com.github.assemblyorg.keepInventory.command.keepInventory.subCommands.action.OnSubCommand;
-import com.github.assemblyorg.keepInventory.command.keepInventory.subCommands.SubCommand;
+import com.github.assemblyorg.keepInventory.command.SubCommand;
 import com.github.assemblyorg.keepInventory.config.MainConfig;
 import com.github.assemblyorg.keepInventory.permission.Permissions;
 import com.mojang.brigadier.tree.LiteralCommandNode;

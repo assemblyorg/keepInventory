@@ -1,6 +1,6 @@
-package com.github.assemblyorg.keepInventory.command.keepInventory.subCommands.action;
+package com.github.assemblyorg.keepInventory.command.keepInventory;
 
-import com.github.assemblyorg.keepInventory.command.keepInventory.subCommands.SubCommand;
+import com.github.assemblyorg.keepInventory.command.SubCommand;
 import com.github.assemblyorg.keepInventory.config.MessagesConfig;
 import com.github.assemblyorg.keepInventory.permission.Permissions;
 import com.github.assemblyorg.keepInventory.util.CommandUtils;
@@ -20,15 +20,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class CheckSubCommand implements SubCommand {
+public class OffSubCommand implements SubCommand {
 
     @Override
     public @NotNull List<ArgumentBuilder<CommandSourceStack, ?>> argument() {
         return List.of(
-                Commands.literal("check")
-                        .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_STATE_CHECK.permission()))
+                Commands.literal("off")
+                        .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_STATE_OFF.permission()))
                         .executes(this::execute)
-                        .then(Commands.argument("player", ArgumentTypes.players())
+                        .then(Commands.argument("players", ArgumentTypes.players())
                                 .requires(ctx -> ctx.getSender().hasPermission(Permissions.COMMAND_OTHER.permission()))
                                 .executes(this::execute)
                         )
@@ -38,7 +38,7 @@ public class CheckSubCommand implements SubCommand {
     @Override
     public int execute(CommandContext<CommandSourceStack> ctx) {
         CommandSender commandSender = ctx.getSource().getSender();
-        List<Player> targets = CommandUtils.resolvePlayers(ctx, "player");
+        List<Player> targets = CommandUtils.resolvePlayers(ctx, "players");
 
         if (CommandUtils.checkTargetsIsNull(commandSender, targets)) {
             return Command.SINGLE_SUCCESS;
@@ -48,15 +48,27 @@ public class CheckSubCommand implements SubCommand {
             TagResolver[] tagResolvers = {
                     Placeholder.unparsed("sender", commandSender.getName()),
                     Placeholder.unparsed("target", target.getName()),
-                    Placeholder.parsed("status", StateToggleUtils.keepInventory(target) ? MessagesConfig.instance().command_check_status_enabled() : MessagesConfig.instance().command_check_status_disabled())
             };
-            if (commandSender.equals(target)) target.sendMessage(MiniMessage.miniMessage().deserialize(
-                    MessagesConfig.instance().command_check_message(),
-                    tagResolvers
-            )); else commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
-                    MessagesConfig.instance().command_check_message_for_sender(),
-                    tagResolvers
-            ));
+            if (!StateToggleUtils.keepInventory(target)) {
+                target.sendMessage(MiniMessage.miniMessage().deserialize(
+                        MessagesConfig.instance().command_off_already(),
+                        tagResolvers
+                ));
+                if (!target.equals(commandSender)) commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
+                        MessagesConfig.instance().command_off_already_for_sender(),
+                        tagResolvers
+                ));
+            } else {
+                target.sendMessage(MiniMessage.miniMessage().deserialize(
+                        MessagesConfig.instance().command_off_message(),
+                        tagResolvers
+                ));
+                if (!target.equals(commandSender)) commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
+                        MessagesConfig.instance().command_off_message_for_sender(),
+                        tagResolvers
+                ));
+                StateToggleUtils.keepInventory(target, false);
+            }
         }
 
         return Command.SINGLE_SUCCESS;
