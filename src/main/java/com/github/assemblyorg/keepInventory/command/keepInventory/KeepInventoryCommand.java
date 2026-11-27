@@ -16,7 +16,8 @@ public class KeepInventoryCommand implements Command {
     private static final SubCommand[] subCommands = {
             new OnSubCommand(),
             new OffSubCommand(),
-            new CheckSubCommand()
+            new CheckSubCommand(),
+            new ReloadSubCommand()
     };
 
     @Override

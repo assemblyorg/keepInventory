@@ -8,6 +8,7 @@ import java.util.Map;
 
 public enum Permissions {
 
+    RELOAD(new Permission("keepinventory.reload", null, Permission.DEFAULT_PERMISSION)),
     COMMAND_USE(new Permission("keepinventory.command.use", null, Permission.DEFAULT_PERMISSION, null)),
     COMMAND_OTHER(new Permission("keepinventory.command.other", null, Permission.DEFAULT_PERMISSION, Map.of(COMMAND_USE.permission().getName(), true))),
     COMMAND_STATE_ON(new Permission("keepinventory.command.state.on", null, Permission.DEFAULT_PERMISSION, Map.of(COMMAND_USE.permission().getName(), true))),

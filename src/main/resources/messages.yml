@@ -9,6 +9,10 @@ command:
   # You can use the <sender> placeholder here
   only_players: "<#FCA503>⚠ Only players can use a subcommand"
 
+  subcommand_reload: # You can use the <sender>, <duration> (in millis) and <error> (in error_message) placeholder here
+    message: "<#8CFC03>✔ Reload completed! (in <duration>ms)"
+    error_message: "<#FC2C03>⚠ An error occurred while reloading (in <duration>ms): "
+
   subcommand_on: # You can use the <sender> and <target> placeholders here
     message: "<#8CFC03>✔ Keep inventory enabled!"
     message_for_sender: "<#8CFC03>✔ Keep inventory for <target> enabled!"
