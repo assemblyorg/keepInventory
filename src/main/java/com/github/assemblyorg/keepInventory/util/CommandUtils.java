@@ -36,7 +36,7 @@ public class CommandUtils {
         } catch (CommandSyntaxException e) {
             ctx.getSource().getSender().sendMessage(MiniMessage.miniMessage().deserialize(
                     MessagesConfig.instance().command_error(),
-                    Placeholder.unparsed("error", e.toString()))
+                    Placeholder.unparsed("error", e.getMessage()))
             );
             KeepInventory.instance().getComponentLogger().error(errorMessage, e);
             throw new RuntimeException(errorMessageContent);
