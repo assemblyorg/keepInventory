@@ -1,12 +1,14 @@
 package com.github.assemblyorg.keepInventory.config;
 
 import com.github.assemblyorg.keepInventory.KeepInventory;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -23,10 +25,15 @@ public abstract class Config {
         this.resourcePath = resourcePath;
         this.configFile = new File(KeepInventory.instance().getDataFolder(), resourcePath);
         this.configDefault = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(KeepInventory.instance().getResource(resourcePath)), StandardCharsets.UTF_8));
-        reload();
+
+        try {
+            reload();
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void reload() {
+    public void reload() throws IOException, InvalidConfigurationException {
         File parentFile = configFile.getParentFile();
         if (!parentFile.exists()) parentFile.mkdirs();
         if (!configFile.exists()) KeepInventory.instance().saveResource(resourcePath, false);
