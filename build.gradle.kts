@@ -5,9 +5,6 @@ plugins {
     id("maven-publish")
 }
 
-group = "com.github.assemblyorg.keepInventory"
-version = "26.3-1.0"
-
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(25)
 }
@@ -54,16 +51,16 @@ publishing {
 
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
-    projectId.set("keepinventorymc")
+    projectId.set(providers.gradleProperty("modrinth.projectId").get())
 
     versionName.set(project.version.toString())
     versionNumber.set(project.version.toString())
-    versionType.set("release")
+    versionType.set(providers.gradleProperty("modrinth.versionType").get())
 
     uploadFile.set(tasks.jar)
 
     gameVersions.add(libs.versions.minecraft)
-    loaders.addAll("paper", "folia", "purpur")
+    loaders.addAll(providers.gradleProperty("modrinth.loaders").get().split(','))
 
-    syncBodyFrom.set(rootProject.file("README.md").readText())
+    syncBodyFrom.set(rootProject.file(providers.gradleProperty("modrinth.README").get()).readText())
 }
