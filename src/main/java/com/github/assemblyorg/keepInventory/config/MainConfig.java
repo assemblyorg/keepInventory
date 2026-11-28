@@ -16,14 +16,14 @@ public class MainConfig extends Config {
         return INSTANCE;
     }
 
-    public @NotNull String key_name() {
+    public String key_name() {
         String path = "key_name";
-        return get().getString(path , getDefault().getString(path, "keepInventory"));
+        return get().getString(path , getDefault().getString(path));
     }
 
     public boolean default_keep_inventory_state() {
         String path = "default_keep_inventory_state";
-        return get().getBoolean(path, getDefault().getBoolean(path, false));
+        return get().getBoolean(path, getDefault().getBoolean(path));
     }
 
     public List<String> command_aliases() {
