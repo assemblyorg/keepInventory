@@ -14,7 +14,7 @@
 
 ---
 
-# For developers
+# For developers (currently unavailable)
 ### Add repository:
 ```kotlin
 repositories {
