@@ -1,6 +1,7 @@
 name: ${name}
 version: ${version}
 main: com.github.assemblyorg.keepInventory.KeepInventory
+bootstrapper: com.github.assemblyorg.keepInventory.KeepInventoryBootstrap
 api-version: ${minecraft}
 authors: [ alexthegoood ]
 website: https://github.com/assemblyorg/keepInventory

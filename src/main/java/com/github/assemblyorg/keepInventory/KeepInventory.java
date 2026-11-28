@@ -7,20 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class KeepInventory extends JavaPlugin {
 
-    private static KeepInventory INSTANCE;
+    private static final KeepInventory instance = new KeepInventory();
 
     public static KeepInventory instance() {
-        assert INSTANCE != null;
-        return INSTANCE;
-    }
-
-    @Override
-    public void onLoad() {
-        try {
-            INSTANCE = this;
-        } finally {
-            getComponentLogger().info("Loading complete");
-        }
+        return instance;
     }
 
     @Override
@@ -31,15 +21,6 @@ public final class KeepInventory extends JavaPlugin {
             CommandManager.registerCommands();
         } finally {
             getLogger().info("Enabling complete");
-        }
-    }
-
-    @Override
-    public void onDisable() {
-        try {
-
-        } finally {
-            getLogger().info("Disabling complete");
         }
     }
 
