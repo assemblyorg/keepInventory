@@ -1,6 +1,12 @@
 [versions]
 minecraft = "26.3"
 paperapi = "26.3.build.+"
+runpaper = "3.1.0"
+minotaur = "2.+"
 
 [libraries]
 paperapi = { module = "io.papermc.paper:paper-api", version.ref = "paperapi" }
+
+[plugins]
+runpaper = { id = "xyz.jpenilla.run-paper", version.ref = "runpaper" }
+minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }

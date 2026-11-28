@@ -1,12 +1,14 @@
 plugins {
     id("java")
-    id("xyz.jpenilla.run-paper") version "3.1.0"
-    id("com.modrinth.minotaur") version "2.+"
+    alias(libs.plugins.runpaper)
+    alias(libs.plugins.minotaur)
     id("maven-publish")
 }
 
+val java = providers.gradleProperty("project.java").get().toInt()
+
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(25)
+    toolchain.languageVersion = JavaLanguageVersion.of(java)
 }
 
 repositories {
@@ -35,6 +37,10 @@ tasks {
         filesMatching("paper-plugin.yml") {
             expand(properties)
         }
+    }
+
+    withType<JavaCompile>().configureEach {
+        options.release = java
     }
 }
 
