@@ -68,5 +68,6 @@ modrinth {
     gameVersions.add(libs.versions.minecraft)
     loaders.addAll(providers.gradleProperty("modrinth.loaders").get().split(','))
 
+    changelog.set(rootProject.file(providers.gradleProperty("modrinth.CHANGELOG").get()).readText())
     syncBodyFrom.set(rootProject.file(providers.gradleProperty("modrinth.README").get()).readText())
 }
